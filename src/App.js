@@ -4,39 +4,53 @@ import ReactDOM from 'react-dom';
 class App extends React.Component {
   constructor(){
     super();
-    this.state = {a: ''}
+    this.state = {val : 0}
+    this.update = this.update.bind(this)
   }
 
-  update(event){ // Value from the input field
+  update(){
     this.setState({
-      a: this.a.value,
-      b: this.refs.b.value,
-      c: this.c.refs.input.value})
-  }   //findDOMNode(the component).value
+      val : this.state.val + 1
+    })
+  }
 
-  // ref is a way to refrence a node or instance of component in the app
-  // ref returns the node we are referencing
+  componentWillMount(){
+    // Only activates once before component mounts
+    console.log('component will mount')
+  }
 
+  render(){
+    console.log('render')
+    return <button onClick={this.update}>{this.state.val}</button>
+  }
+
+  componentDidMouont(){
+    // Activate when the component does mount to the DOM
+    console.log('Component did mount')
+  }
+
+  componentWillUnmount(){
+    // Will activate before component will unmount
+    console.log('component will umount')
+  }
+}
+
+class Wrapper extends React.Component{
+  mount(){
+    ReactDOM.render(<App />, document.getElementById('a'))
+  }
+
+  unmount(){
+    ReactDOM.unmountComponentAtNode(document.getElementById('a'))
+  }
   render(){
     return (
       <div>
-        <input type="text" ref={node => this.a = node} onChange={this.update.bind(this)} />
-        {this.state.a}
-        <hr />
-        <input type="text" ref="b" onChange={this.update.bind(this)} />
-        {this.state.b}
-        <hr />
-        <Input ref={component => this.c = component} update={this.update.bind(this)} />
-        {this.state.c}
+        <button onClick={this.mount.bind(this)}>Mount</button>
+        <button onClick={this.unmount.bind(this)}>UnMount</button>
+        <div id='a'></div>
       </div>
     )
-      // MAKE SURE THE INPUT I IS UPPERCASED WHEN REF COMPONENTS!!!
   }
 }
-
-class Input extends React.Component {
-  render(){
-    return (<input ref="input" type="text" onChange={this.props.update}/>)
-  }
-}
-export default App
+export default Wrapper
