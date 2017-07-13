@@ -17,21 +17,26 @@ class App extends React.Component {
   componentWillMount(){
     // Only activates once before component mounts
     console.log('component will mount')
+    this.setState({
+      m: 2
+    })
   }
 
   render(){
     console.log('render')
-    return <button onClick={this.update}>{this.state.val}</button>
+    return <button onClick={this.update}>{this.state.val * this.state.m}</button>
   }
 
-  componentDidMouont(){
+  componentDidMount(){
     // Activate when the component does mount to the DOM
     console.log('Component did mount')
+    this.inc = setInterval(this.update, 500)
   }
 
   componentWillUnmount(){
     // Will activate before component will unmount
     console.log('component will umount')
+    clearInterval(this.inc)
   }
 }
 
